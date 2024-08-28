@@ -1,5 +1,12 @@
+import { updateElectronApp } from 'update-electron-app';
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
+
+// Automatically check for updates and install them
+updateElectronApp({
+  repo: 'NikBostrom/art-gallery-sales', // Replace with your GitHub username and repo name
+  updateInterval: '1 hour' // How often to check for updates (optional)
+});
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -12,15 +19,17 @@ const createWindow = () => {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-    },
+      preload: path.join(__dirname, 'preload.js')
+    }
   });
 
   // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
   } else {
-    mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
+    mainWindow.loadFile(
+      path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`)
+    );
   }
 
   // Open the DevTools.
